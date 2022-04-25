@@ -26,7 +26,12 @@ const [, toggleDark] = useDarkMode()
     </main>
 
     <footer m2 flex justify-center text-2xl gap-4 flex-shrink-0 py-5>
-      <a op30 hover="op80" href="https://github.com/jremye" target="_blank">
+      <a
+        op30
+        hover="op80"
+        href="https://github.com/jremye/illustrator"
+        target="_blank"
+      >
         <button
           i-carbon-logo-github
           c-inherit
