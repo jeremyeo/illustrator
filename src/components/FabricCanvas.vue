@@ -2,29 +2,19 @@
 import { onMounted } from 'vue'
 import useCanvas from '@/hooks/useCanvas'
 import { useDesignStore } from '@/stores/design'
+import { storeToRefs } from 'pinia'
 
 const design = useDesignStore()
 const [, initCanvas] = useCanvas()
-
+const { wrapperRef, canvasRef } = storeToRefs(design)
 onMounted(() => {
   initCanvas()
 })
 </script>
 
 <template>
-  <div
-    relative
-    w-60vw
-    h-full
-    mx-auto
-    overflow-hidden
-    :ref="(el) => design.$patch({ wrapperRef: el })"
-  >
-    <canvas
-      id="canvas"
-      :ref="(el) => design.$patch({ canvasRef: el })"
-      border-rounded-3
-    />
+  <div relative w-60vw h-full mx-auto overflow-hidden ref="wrapperRef">
+    <canvas id="canvas" ref="canvasRef" border-rounded-3 />
     <div
       absolute
       bottom-0
