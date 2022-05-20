@@ -12,6 +12,7 @@ export default (event: IEvent<MouseEvent>) => {
   const design = useDesignStore()
   const [canvas] = useCanvas()
   design.setPointer(event.absolutePointer)
+  handleAlignPointer()
   handlePreview()
   if (event.e.ctrlKey) {
     const [, removeCursor] = useCursor()
@@ -33,9 +34,8 @@ export default (event: IEvent<MouseEvent>) => {
     } else {
       canvas.setCursor('grab')
     }
+
     return
   }
-
-  handleAlignPointer()
   handleDrawCursor()
 }

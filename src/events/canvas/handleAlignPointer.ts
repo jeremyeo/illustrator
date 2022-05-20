@@ -10,7 +10,7 @@ export default () => {
         design.pointer
       ) <= 30
     ) {
-      Object.assign(design.pointer, designStore.temp.svgPath[0].coord.end)
+      design.setPointer(designStore.temp.svgPath[0].coord.end)
     }
   }
 }
