@@ -17,17 +17,6 @@ enum Mode {
 export type TMode = keyof typeof Mode
 
 export type TObjects = Line | Curve
-
-export interface IDesignState {
-  wrapperRef: null | HTMLDivElement
-  canvasRef: null | HTMLCanvasElement
-  mode: TMode
-  modeList: TMode[]
-  pointer: { x: number; y: number }
-  ismousedown: boolean
-  activeObjectId: number | null
-}
-
 export interface IDesignStore {
   objects: Array<TObjects>
   selections: FabricObject[]
@@ -73,8 +62,17 @@ export const designStore: IDesignStore = {
   },
 }
 
-export const useDesignStore = defineStore({
-  id: 'design',
+export interface IDesignState {
+  wrapperRef: null | HTMLDivElement
+  canvasRef: null | HTMLCanvasElement
+  mode: TMode
+  modeList: TMode[]
+  pointer: { x: number; y: number }
+  ismousedown: boolean
+  activeObjectId: number | null
+}
+
+export const useDesignStore = defineStore('design', {
   state: (): IDesignState => ({
     wrapperRef: null,
     canvasRef: null,

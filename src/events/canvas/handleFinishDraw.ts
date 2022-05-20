@@ -18,6 +18,7 @@ const drawLinePoint = (pointer: IPoint) => {
 }
 
 const drawCurvePoint = (pointer: IPoint) => {
+  const startPoint = designStore.temp.svgPath[0]
   const lastPoint = designStore.temp.svgPath.slice(-1)[0]
 
   const endPoints = [pointer.x, pointer.y]
@@ -40,6 +41,12 @@ const drawCurvePoint = (pointer: IPoint) => {
         ...endPoints,
       ])
     )
+
+    if (
+      pointer.x === startPoint.coord.end.x &&
+      pointer.y === startPoint.coord.end.y
+    )
+      return false
   }
 
   return true
