@@ -69,6 +69,9 @@ export interface IDesignState {
   modeList: TMode[]
   pointer: { x: number; y: number }
   ismousedown: boolean
+  isCanvasDrag: boolean
+  isCtrlKey: boolean
+  zoom: number
   activeObjectId: number | null
 }
 
@@ -80,6 +83,9 @@ export const useDesignStore = defineStore('design', {
     modeList: Object.keys(Mode) as TMode[],
     pointer: { x: 0, y: 0 },
     ismousedown: false,
+    isCanvasDrag: false,
+    isCtrlKey: false,
+    zoom: 1,
     activeObjectId: null,
   }),
   getters: {

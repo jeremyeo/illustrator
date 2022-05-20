@@ -1,6 +1,7 @@
 import handleMouseup from '@/events/canvas/handleMouseup'
 import handleMousemove from '@/events/canvas/handleMousemove'
 import handleMousedown from '@/events/canvas/handleMousedown'
+import handleMousewheel from '@/events/canvas/handleMousewheel'
 import handleSelection from '@/events/canvas/handleSelection'
 import useCanvas from '@/hooks/useCanvas'
 import handleDblclick from './handleDblclick'
@@ -20,4 +21,5 @@ export const addFabricCanvasEvent = () => {
   canvas.on('selection:created', handleSelection)
   canvas.on('selection:cleared', handleSelectionCleared)
   canvas.on('mouse:dblclick', handleDblclick)
+  canvas.on('mouse:wheel', handleMousewheel)
 }

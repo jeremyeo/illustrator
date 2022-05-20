@@ -12,7 +12,7 @@ export const handleDrawCursor = () => {
   cursor.render()
 }
 
-const removeCursor = () => {
+export const removeCursor = () => {
   cursor?.remove()
   cursor = null
 }

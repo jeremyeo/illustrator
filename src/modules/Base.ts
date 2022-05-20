@@ -10,14 +10,8 @@ import type { FabricObject } from '@/utils/initFabricPrototype'
 export default class Base {
   previewOpacity = 0.3
   normalOpacity = 1
-
   id: number = Date.now()
-  design = useDesignStore()
-  canvas = useCanvas()[0]
-  isDarkMode = useDarkMode()[0]
-  svgPath: Path[] = []
-  fabricObject: FabricObject | null = null
-  config: IObjectOptions = {
+  private _config: IObjectOptions = {
     name: String(this.id),
     strokeWidth: 1,
     strokeUniform: true,
@@ -31,14 +25,27 @@ export default class Base {
     flipY: false,
     evented: true,
   }
+  design = useDesignStore()
+  canvas = useCanvas()[0]
+  isDarkMode = useDarkMode()[0]
+  svgPath: Path[] = []
+  fabricObject: FabricObject | null = null
 
   constructor(svgPath?: Path[], config?: IObjectOptions) {
     this.svgPath = [...(svgPath || [])]
-    Object.assign(this.config, config)
+    if (config) this.config = config
     const opacity = this.config.name === 'preview' ? '.3' : '1'
     this.config.stroke = this.isDarkMode.value
       ? `rgba(255, 255, 255, ${opacity})`
       : `rgba(0, 0, 0, ${opacity})`
+  }
+
+  set config(newConfig: IObjectOptions) {
+    Object.assign(this._config, newConfig)
+  }
+
+  get config(): IObjectOptions {
+    return this._config
   }
 
   svgPath2Text(svgPath: Path[]) {
@@ -91,6 +98,8 @@ export default class Base {
         hoverCursor: 'none',
       } as IObjectOptions)
     }
+
+    console.log(newConfig)
     this.fabricObject?.set(newConfig)
   }
 

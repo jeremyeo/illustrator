@@ -1,4 +1,5 @@
 import handleKeydown from './handleKeydown'
+import handleKeyup from './handleKeyup'
 import handleResize from './handleResize'
 
 type IWindowEvents = {
@@ -8,6 +9,7 @@ type IWindowEvents = {
 const windowEvents: IWindowEvents = {
   resize: handleResize,
   keydown: handleKeydown,
+  keyup: handleKeyup,
 }
 
 export const removeWindowEvent = () => {

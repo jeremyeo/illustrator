@@ -22,7 +22,8 @@ onMounted(() => {
       pointer-events-none
       class="left-1/2 transform -translate-1/2"
     >
-      x:{{ design.pointer.x }} y:{{ design.pointer.y }}
+      x: {{ design.pointer.x.toFixed(2) }} y:
+      {{ design.pointer.y.toFixed(2) }} zoom: {{ design.zoom.toFixed(2) }}
     </div>
   </div>
 </template>
