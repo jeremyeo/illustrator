@@ -31,6 +31,8 @@ export default class Base {
   svgPath: Path[] = []
   fabricObject: FabricObject | null = null
 
+  events: { [key: string]: Set<() => void> } = {}
+
   constructor(svgPath?: Path[], config?: IObjectOptions) {
     this.svgPath = [...(svgPath || [])]
     if (config) this.config = config
@@ -48,6 +50,19 @@ export default class Base {
     return this._config
   }
 
+  on(type: string, callback: () => void) {
+    if (!this.events[type]) this.events[type] = new Set()
+    this.events[type].add(callback)
+  }
+
+  emit(type: string) {
+    this.events[type]?.forEach((callback) => callback.call(this))
+  }
+
+  off(type: string, callback: () => void) {
+    this.events[type]?.delete(callback)
+  }
+
   svgPath2Text(svgPath: Path[]) {
     return svgPath
       .map((path) => `${path.type} ${path.points.join(',')}`)
@@ -63,12 +78,14 @@ export default class Base {
   }
 
   render() {
+    this.emit('beforeRender')
     this.remove()
     this.fabricObject = this.getFabricObject()
     this.fabricObject.id = this.id
     this.update()
     this.addEvent()
     this.canvas.add(this.fabricObject as FabricObject)
+    this.emit('afterRender')
   }
 
   addEvent() {
@@ -98,8 +115,6 @@ export default class Base {
         hoverCursor: 'none',
       } as IObjectOptions)
     }
-
-    console.log(newConfig)
     this.fabricObject?.set(newConfig)
   }
 

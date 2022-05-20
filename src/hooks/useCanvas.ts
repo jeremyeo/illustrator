@@ -21,6 +21,7 @@ const initCanvas = () => {
   canvas = new fabric.Canvas(design.canvasRef, {
     width: design.getWidth(),
     height: design.getHeight(),
+    preserveObjectStacking: true,
   })
   // 触发右键事件
   canvas.fireRightClick = true

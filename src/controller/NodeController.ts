@@ -7,7 +7,7 @@ import Line from '@/modules/Line'
 export default class PathController {
   private object: null | TObjects = null
   private nodeObjects: Array<Node | Line> = []
-  private mousedown = false
+  private eventID: null | (() => void) = null
 
   get nodeName() {
     return `${this.object?.id}_node`
@@ -32,7 +32,6 @@ export default class PathController {
       config: { name: this.nodeName },
     })
     endNode.render()
-
     endNode.fabricObject?.on('moving', this.handleMoving.bind(this))
     this.nodeObjects.push(endNode)
   }
@@ -44,17 +43,14 @@ export default class PathController {
   }
 
   addObjectMoveEvent() {
-    this.object?.fabricObject?.on('mousedown', () => {
-      this.mousedown = true
+    this.object?.fabricObject?.on('moving', () => {
+      this.isEdit && this.cleanNode()
     })
 
-    this.object?.fabricObject?.on('mousemove', () => {
-      this.mousedown && this.isEdit && this.cleanNode()
-    })
-
-    this.object?.fabricObject?.on('mouseup', () => {
-      this.mousedown = false
-      this.isEdit && this.renderNode()
+    this.object?.fabricObject?.on('modified', ({ action }) => {
+      if (action === 'drag') {
+        this.isEdit && this.renderNode()
+      }
     })
   }
 
@@ -110,15 +106,22 @@ export default class PathController {
     this.nodeObjects = []
   }
 
+  hiddenBordersAndControls() {
+    this.object?.fabricObject?.set({ hasBorders: false, hasControls: false })
+  }
+
   edit(object: TObjects) {
     this.object = object
-    this.object?.fabricObject?.set({ hasBorders: false, hasControls: false })
+    this.hiddenBordersAndControls()
+    this.eventID = this.hiddenBordersAndControls.bind(this)
+    this.object.on('afterRender', this.eventID)
     this.addObjectMoveEvent()
     this.renderNode()
   }
 
   exit() {
-    this.object?.render()
+    if (this.eventID) this.object?.off('afterRender', this.eventID)
+    this.object?.update()
     this.object = null
     this.cleanNode()
   }
