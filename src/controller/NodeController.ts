@@ -112,11 +112,13 @@ export default class PathController {
 
   edit(object: TObjects) {
     this.object = object
+    this.object?.fabricObject?.set({ hasBorders: false, hasControls: false })
     this.addObjectMoveEvent()
     this.renderNode()
   }
 
   exit() {
+    this.object?.render()
     this.object = null
     this.cleanNode()
   }
