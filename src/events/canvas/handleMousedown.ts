@@ -1,10 +1,10 @@
-import { useDesignStore } from '@/stores/design'
-import handlePreview from './handlePreview'
-import { handleDrawPoint, handleFinishDraw } from './handleFinishDraw'
 import type { IEvent } from 'fabric/fabric-impl'
 import handleExitMode from '../window/handleExitMode'
+import handlePreview from './handlePreview'
+import { handleDrawPoint, handleFinishDraw } from './handleFinishDraw'
 import { nodeController } from '.'
-import useDisableEvent from '@/hooks/useDisableEvent'
+import { useDesignStore } from '@/stores/design'
+import useDisableEvent from '@/composables/useDisableEvent'
 
 export default (event: IEvent<MouseEvent>) => {
   const design = useDesignStore()
@@ -16,12 +16,13 @@ export default (event: IEvent<MouseEvent>) => {
         const [, setDisableEvent] = useDisableEvent()
         design.isCanvasDrag = true
         setDisableEvent(true)
-      } else {
-        if (!handleDrawPoint()) handleFinishDraw()
+      }
+      else {
+        if (!handleDrawPoint())
+          handleFinishDraw()
         handlePreview()
-        if (!event.target && nodeController.isEdit) {
+        if (!event.target && nodeController.isEdit)
           nodeController.exit()
-        }
       }
       break
     // 右键按下

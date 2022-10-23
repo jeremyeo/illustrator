@@ -7,10 +7,9 @@ export default () => {
     if (
       calcDistanceBetweenTwoPoints(
         designStore.temp.svgPath[0].coord.end,
-        design.pointer
+        design.pointer,
       ) <= 30
-    ) {
+    )
       design.setPointer(designStore.temp.svgPath[0].coord.end)
-    }
   }
 }

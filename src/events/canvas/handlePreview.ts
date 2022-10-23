@@ -1,9 +1,9 @@
+import type { IPoint } from 'fabric/fabric-impl'
 import Curve from '@/modules/Curve'
 import Line from '@/modules/Line'
 import Path from '@/modules/Path'
 import { designStore, useDesignStore } from '@/stores/design'
 import { reversePoint } from '@/utils'
-import type { IPoint } from 'fabric/fabric-impl'
 
 const renderLinePreview = () => {
   const design = useDesignStore()
@@ -35,14 +35,15 @@ const renderCurvePreview = () => {
   if (design.ismousedown) {
     const point = reversePoint(
       design.pointer,
-      secondLastPoint.coord.end as IPoint
+      secondLastPoint.coord.end as IPoint,
     )
 
     secondLastPoint.setCoord({ c2: point })
-  } else if (secondLastPoint.coord.c2) {
+  }
+  else if (secondLastPoint.coord.c2) {
     const point = reversePoint(
       secondLastPoint.coord.c2 as IPoint,
-      secondLastPoint.coord.end as IPoint
+      secondLastPoint.coord.end as IPoint,
     )
 
     lastPoint.setCoord({ c1: point })
@@ -56,7 +57,7 @@ const renderCurvePreview = () => {
     hoverCursor: 'none',
   }
   designStore.temp.objects.push(
-    new Curve(designStore.temp.svgPath, previewConfig)
+    new Curve(designStore.temp.svgPath, previewConfig),
   )
 
   if (designStore.temp.svgPath.length > 2) {
@@ -69,17 +70,18 @@ const renderCurvePreview = () => {
           new Path('M', [lastPoint.coord.end.x, lastPoint.coord.end.y]),
           new Path('C', lastPath.points),
         ],
-        previewConfig
-      )
+        previewConfig,
+      ),
     )
   }
 
-  designStore.temp.objects.forEach((object) => object.render())
+  designStore.temp.objects.forEach(object => object.render())
 }
 
 export default () => {
   const design = useDesignStore()
-  if (designStore.temp.svgPath.length < 2) return
+  if (designStore.temp.svgPath.length < 2)
+    return
 
   switch (design.mode) {
     case 'Line':

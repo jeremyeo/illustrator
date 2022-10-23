@@ -1,4 +1,4 @@
-import { Theme } from '@unocss/preset-mini'
+import type { Theme } from '@unocss/preset-mini'
 import { defineConfig, presetAttributify, presetIcons, presetUno } from 'unocss'
 
 export default defineConfig({

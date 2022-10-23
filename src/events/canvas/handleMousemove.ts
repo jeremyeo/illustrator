@@ -1,11 +1,10 @@
-import handlePreview from './handlePreview'
 import type { IEvent } from 'fabric/fabric-impl'
-import { useDesignStore } from '@/stores/design'
-import { handleDrawCursor } from '@/hooks/useCursor'
-import handleAlignPointer from './handleAlignPointer'
-import useCanvas from '@/hooks/useCanvas'
-import useCursor from '@/hooks/useCursor'
 import { fabric } from 'fabric'
+import handlePreview from './handlePreview'
+import handleAlignPointer from './handleAlignPointer'
+import { useDesignStore } from '@/stores/design'
+import useCursor, { handleDrawCursor } from '@/composables/useCursor'
+import useCanvas from '@/composables/useCanvas'
 
 let previousEvent: null | IEvent<MouseEvent> = null
 export default (event: IEvent<MouseEvent>) => {
@@ -22,8 +21,8 @@ export default (event: IEvent<MouseEvent>) => {
       let { movementX } = event.e
       let { movementY } = event.e
       if (
-        (movementX === undefined || movementY === undefined) &&
-        previousEvent
+        (movementX === undefined || movementY === undefined)
+        && previousEvent
       ) {
         movementX = event.e.screenX - previousEvent?.e.screenX
         movementY = event.e.screenY - previousEvent?.e.screenY
@@ -31,7 +30,8 @@ export default (event: IEvent<MouseEvent>) => {
       const delta = new fabric.Point(movementX, movementY)
       canvas.relativePan(delta)
       previousEvent = event
-    } else {
+    }
+    else {
       canvas.setCursor('grab')
     }
 

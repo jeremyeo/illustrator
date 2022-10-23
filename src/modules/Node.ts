@@ -1,7 +1,7 @@
-import Base from './Base'
 import { fabric } from 'fabric'
-import type Path from './Path'
 import type { IEventNew, IObjectOptions, IPoint } from 'fabric/fabric-impl'
+import Base from './Base'
+import type Path from './Path'
 import { offsetPoint, reversePoint } from '@/utils'
 
 export type TPointType = 'c1' | 'c2' | 'end'
@@ -52,23 +52,25 @@ export default class Node extends Base {
     if (this.type === 'c1' && this.prePath) {
       const point = reversePoint(
         this.path.coord[this.type] as IPoint,
-        this.prePath.coord.end
+        this.prePath.coord.end,
       )
       this.prePath.setCoord({ c2: point })
-    } else if (this.type === 'c2' && this.nextPath) {
+    }
+    else if (this.type === 'c2' && this.nextPath) {
       const point = reversePoint(
         this.path.coord[this.type] as IPoint,
-        this.path.coord.end
+        this.path.coord.end,
       )
       this.nextPath.setCoord({ c1: point })
-    } else if (this.type === 'end') {
-      this.path.coord.c2 &&
-        this.path.setCoord({
+    }
+    else if (this.type === 'end') {
+      this.path.coord.c2
+        && this.path.setCoord({
           c2: offsetPoint(this.path.coord.c2, offset),
         })
 
-      this.nextPath &&
-        this.nextPath.setCoord({
+      this.nextPath
+        && this.nextPath.setCoord({
           c1: offsetPoint(this.nextPath.coord.c1, offset),
         })
     }

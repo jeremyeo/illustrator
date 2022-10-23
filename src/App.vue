@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import FabricCanvas from './components/FabricCanvas.vue'
-import useDarkMode from './hooks/useDarkMode'
+import useDarkMode from './composables/useDarkMode'
 import FabricDrawTool from './components/FabricDrawTool.vue'
 
 const [, toggleDark] = useDarkMode()
@@ -18,7 +18,9 @@ const [, toggleDark] = useDarkMode()
     dark:c-white
     font-mono
   >
-    <header flex justify-center flex-shrink-0 py-8 text-4xl>Illustrator</header>
+    <header flex justify-center flex-shrink-0 py-8 text-4xl>
+      Illustrator
+    </header>
 
     <main w-full m-auto grow box-border relative overflow-hidden>
       <FabricCanvas />
@@ -37,17 +39,17 @@ const [, toggleDark] = useDarkMode()
           c-inherit
           text-inherit
           cursor-pointer
-        ></button>
+        />
       </a>
       <button
-        @click="toggleDark"
         op30
         hover="op80"
         c-inherit
         cursor-pointer
         i-carbon-sun
         dark:i-carbon-moon
-      ></button>
+        @click="toggleDark"
+      />
     </footer>
   </div>
 </template>

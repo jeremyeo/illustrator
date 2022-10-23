@@ -2,9 +2,10 @@ import type { IPoint } from 'fabric/fabric-impl'
 
 export const offsetPoint = (
   point: IPoint | null,
-  offset: IPoint
+  offset: IPoint,
 ): IPoint | undefined => {
-  if (!point) return
+  if (!point)
+    return
   return {
     x: point.x + offset.x,
     y: point.y + offset.y,
@@ -19,5 +20,5 @@ export const reversePoint = (point: IPoint, center: IPoint): IPoint => {
 }
 
 export const calcDistanceBetweenTwoPoints = (p1: IPoint, p2: IPoint) => {
-  return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2))
+  return Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2)
 }

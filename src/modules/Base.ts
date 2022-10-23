@@ -1,10 +1,10 @@
 import { fabric } from 'fabric'
-import type Path from './Path'
-import useCanvas from '@/hooks/useCanvas'
-import useDarkMode from '@/hooks/useDarkMode'
-import { useDesignStore } from '@/stores/design'
-import useDisableEvent from '@/hooks/useDisableEvent'
 import type { IObjectOptions } from 'fabric/fabric-impl'
+import type Path from './Path'
+import useCanvas from '@/composables/useCanvas'
+import useDarkMode from '@/composables/useDarkMode'
+import { useDesignStore } from '@/stores/design'
+import useDisableEvent from '@/composables/useDisableEvent'
 import type { FabricObject } from '@/utils/initFabricPrototype'
 
 export default class Base {
@@ -25,6 +25,7 @@ export default class Base {
     flipY: false,
     evented: true,
   }
+
   design = useDesignStore()
   canvas = useCanvas()[0]
   isDarkMode = useDarkMode()[0]
@@ -35,7 +36,8 @@ export default class Base {
 
   constructor(svgPath?: Path[], config?: IObjectOptions) {
     this.svgPath = [...(svgPath || [])]
-    if (config) this.config = config
+    if (config)
+      this.config = config
     const opacity = this.config.name === 'preview' ? '.3' : '1'
     this.config.stroke = this.isDarkMode.value
       ? `rgba(255, 255, 255, ${opacity})`
@@ -51,12 +53,13 @@ export default class Base {
   }
 
   on(type: string, callback: () => void) {
-    if (!this.events[type]) this.events[type] = new Set()
+    if (!this.events[type])
+      this.events[type] = new Set()
     this.events[type].add(callback)
   }
 
   emit(type: string) {
-    this.events[type]?.forEach((callback) => callback.call(this))
+    this.events[type]?.forEach(callback => callback.call(this))
   }
 
   off(type: string, callback: () => void) {
@@ -65,7 +68,7 @@ export default class Base {
 
   svgPath2Text(svgPath: Path[]) {
     return svgPath
-      .map((path) => `${path.type} ${path.points.join(',')}`)
+      .map(path => `${path.type} ${path.points.join(',')}`)
       .join(' ')
   }
 
@@ -93,8 +96,8 @@ export default class Base {
   }
 
   getStroke(previewOpacity?: number, normalOpacity?: number) {
-    const opacity =
-      this.config.name === 'preview'
+    const opacity
+      = this.config.name === 'preview'
         ? previewOpacity || this.previewOpacity
         : normalOpacity || this.normalOpacity
     return this.isDarkMode.value

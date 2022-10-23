@@ -18,7 +18,7 @@ export default class PathController {
   }
 
   updateNodes() {
-    this.nodeObjects.forEach((node) => node.update())
+    this.nodeObjects.forEach(node => node.update())
   }
 
   renderNodeByType(path: Path, type: TPointType, index: number) {
@@ -48,9 +48,8 @@ export default class PathController {
     })
 
     this.object?.fabricObject?.on('modified', ({ action }) => {
-      if (action === 'drag') {
+      if (action === 'drag')
         this.isEdit && this.renderNode()
-      }
     })
   }
 
@@ -83,7 +82,8 @@ export default class PathController {
 
   renderNode() {
     this.cleanNode()
-    if (!this.object) return
+    if (!this.object)
+      return
     this.object.svgPath.forEach((node, index) => {
       switch (node.type) {
         case 'C':
@@ -102,7 +102,7 @@ export default class PathController {
   }
 
   cleanNode() {
-    this.nodeObjects.forEach((node) => node.remove())
+    this.nodeObjects.forEach(node => node.remove())
     this.nodeObjects = []
   }
 
@@ -120,7 +120,8 @@ export default class PathController {
   }
 
   exit() {
-    if (this.eventID) this.object?.off('afterRender', this.eventID)
+    if (this.eventID)
+      this.object?.off('afterRender', this.eventID)
     this.object?.update()
     this.object = null
     this.cleanNode()

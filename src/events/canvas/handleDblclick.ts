@@ -1,7 +1,7 @@
-import useCanvas from '@/hooks/useCanvas'
-import { designStore } from '@/stores/design'
 import type { IEvent } from 'fabric/fabric-impl'
 import { nodeController } from '.'
+import useCanvas from '@/composables/useCanvas'
+import { designStore } from '@/stores/design'
 
 export default (e: IEvent) => {
   const [canvas] = useCanvas()

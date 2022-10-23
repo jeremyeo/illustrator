@@ -1,13 +1,13 @@
+import handleDblclick from './handleDblclick'
+import handleObjectModified from './handleObjectModified'
+import handleSelectionCleared from './handleSelectionCleared'
 import handleMouseup from '@/events/canvas/handleMouseup'
 import handleMousemove from '@/events/canvas/handleMousemove'
 import handleMousedown from '@/events/canvas/handleMousedown'
 import handleMousewheel from '@/events/canvas/handleMousewheel'
 import handleSelection from '@/events/canvas/handleSelection'
-import useCanvas from '@/hooks/useCanvas'
-import handleDblclick from './handleDblclick'
+import useCanvas from '@/composables/useCanvas'
 import NodeController from '@/controller/NodeController'
-import handleObjectModified from './handleObjectModified'
-import handleSelectionCleared from './handleSelectionCleared'
 
 export const nodeController = new NodeController()
 

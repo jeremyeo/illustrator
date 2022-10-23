@@ -1,12 +1,12 @@
-import useCanvas, { toggleSelection } from '@/hooks/useCanvas'
-import useCursor from '@/hooks/useCursor'
-import useDisableEvent from '@/hooks/useDisableEvent'
+import type { IPoint } from 'fabric/fabric-impl'
+import { defineStore } from 'pinia'
+import useCanvas, { toggleSelection } from '@/composables/useCanvas'
+import useCursor from '@/composables/useCursor'
+import useDisableEvent from '@/composables/useDisableEvent'
 import type Curve from '@/modules/Curve'
 import type Line from '@/modules/Line'
 import type Path from '@/modules/Path'
 import type { FabricObject } from '@/utils/initFabricPrototype'
-import type { IPoint } from 'fabric/fabric-impl'
-import { defineStore } from 'pinia'
 
 enum Mode {
   Hand = 'Hand',
@@ -38,7 +38,7 @@ export const designStore: IDesignStore = {
     objects: [],
   },
   findObjectById(id: number) {
-    return this.objects.find((object) => object.id === id)
+    return this.objects.find(object => object.id === id)
   },
   cleanSelections() {
     const [canvas] = useCanvas()
@@ -53,7 +53,7 @@ export const designStore: IDesignStore = {
     this.selections = []
   },
   cleanTempObjects() {
-    designStore.temp.objects.forEach((object) => object.remove())
+    designStore.temp.objects.forEach(object => object.remove())
     designStore.temp.objects = []
   },
   resetTempSvgPath() {
@@ -104,8 +104,10 @@ export const useDesignStore = defineStore('design', {
       Object.assign(this.pointer, pointer)
     },
     handleChangeMode(mode?: TMode) {
-      if (mode === this.mode) return
-      if (mode) this.mode = mode
+      if (mode === this.mode)
+        return
+      if (mode)
+        this.mode = mode
       const [canvas] = useCanvas()
       const [, toggleDisabledEvent] = useDisableEvent()
       const [, removeCursor] = useCursor()

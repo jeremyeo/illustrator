@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import useCanvas from '@/hooks/useCanvas'
-import { useDesignStore } from '@/stores/design'
 import { storeToRefs } from 'pinia'
+import useCanvas from '@/composables/useCanvas'
+import { useDesignStore } from '@/stores/design'
 
 const design = useDesignStore()
 const [, initCanvas] = useCanvas()
@@ -13,7 +13,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div relative w-60vw h-full mx-auto overflow-hidden ref="wrapperRef">
+  <div ref="wrapperRef" relative w-60vw h-full mx-auto overflow-hidden>
     <canvas id="canvas" ref="canvasRef" border-rounded-3 />
     <div
       absolute

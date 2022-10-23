@@ -1,4 +1,4 @@
-import useCanvas from '@/hooks/useCanvas'
+import useCanvas from '@/composables/useCanvas'
 import { useDesignStore } from '@/stores/design'
 
 export default (e: KeyboardEvent) => {

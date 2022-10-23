@@ -11,7 +11,8 @@ let canvas: null | Canvas = null
 
 // 切换 Fabric Canvas 可否区域选择
 export const toggleSelection = (selection?: boolean) => {
-  if (!canvas) return
+  if (!canvas)
+    return
   canvas.selection = selection !== undefined ? selection : !canvas.selection
 }
 

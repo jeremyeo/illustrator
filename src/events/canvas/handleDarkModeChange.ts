@@ -1,8 +1,8 @@
-import useCanvas from '@/hooks/useCanvas'
-import useDarkMode from '@/hooks/useDarkMode'
-import { designStore } from '@/stores/design'
 import { watch } from 'vue'
 import { nodeController } from '.'
+import useCanvas from '@/composables/useCanvas'
+import useDarkMode from '@/composables/useDarkMode'
+import { designStore } from '@/stores/design'
 
 const [isDark] = useDarkMode()
 const getBackgroundColor = () => {
@@ -11,20 +11,21 @@ const getBackgroundColor = () => {
 
 let working = false
 export default () => {
-  if (working) return
+  if (working)
+    return
   const [canvas] = useCanvas()
   working = true
   watch(
     isDark,
     () => {
-      designStore.objects.forEach((object) => object.update())
-      designStore.temp.objects.forEach((object) => object.update())
+      designStore.objects.forEach(object => object.update())
+      designStore.temp.objects.forEach(object => object.update())
       nodeController.updateNodes()
       canvas.setBackgroundColor(
         getBackgroundColor(),
-        canvas.renderAll.bind(canvas)
+        canvas.renderAll.bind(canvas),
       )
     },
-    { immediate: true }
+    { immediate: true },
   )
 }

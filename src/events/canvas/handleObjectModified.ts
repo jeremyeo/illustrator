@@ -10,7 +10,7 @@ import Path, { type TPoint } from '@/modules/Path'
 const transformPath = (
   path: FabricObjectPath,
   pathOffset: IPoint,
-  matrix: number[]
+  matrix: number[],
 ) => {
   const points = []
   switch (path[0]) {
@@ -32,13 +32,14 @@ const transformPath = (
       point.y -= pathOffset.y
       const transform = fabric.util.transformPoint(point, matrix)
       return [transform.x, transform.y]
-    })
+    }),
   )
 }
 
 const updateObjectSvgPathByFabricObject = (fabricObject: FabricObject) => {
   const object = designStore.findObjectById(fabricObject.id)
-  if (!object) return
+  if (!object)
+    return
   const matrix = fabricObject.calcTransformMatrix()
   object.svgPath = fabricObject.path.map((path) => {
     return transformPath(path, fabricObject.pathOffset as IPoint, matrix as [])
@@ -48,9 +49,10 @@ const updateObjectSvgPathByFabricObject = (fabricObject: FabricObject) => {
 export default (e: IEvent) => {
   if (e.target?.id) {
     updateObjectSvgPathByFabricObject(e.target)
-  } else if (e.target?._objects) {
-    e.target._objects.forEach((object) =>
-      updateObjectSvgPathByFabricObject(object)
+  }
+  else if (e.target?._objects) {
+    e.target._objects.forEach(object =>
+      updateObjectSvgPathByFabricObject(object),
     )
   }
 }

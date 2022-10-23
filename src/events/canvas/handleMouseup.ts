@@ -1,5 +1,5 @@
-import useCanvas from '@/hooks/useCanvas'
-import useDisableEvent from '@/hooks/useDisableEvent'
+import useCanvas from '@/composables/useCanvas'
+import useDisableEvent from '@/composables/useDisableEvent'
 import { useDesignStore } from '@/stores/design'
 
 export default () => {

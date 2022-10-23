@@ -3,18 +3,20 @@ import Cursor from '@/modules/Cursor'
 import { useDesignStore } from '@/stores/design'
 
 let cursor: Cursor | null = null
-export const handleDrawCursor = () => {
-  removeCursor()
-  const design = useDesignStore()
-  if (design.mode === 'Hand') return
-  const point = new Path('M', [design.pointer.x, design.pointer.y])
-  cursor = new Cursor([point])
-  cursor.render()
-}
 
 export const removeCursor = () => {
   cursor?.remove()
   cursor = null
+}
+
+export const handleDrawCursor = () => {
+  removeCursor()
+  const design = useDesignStore()
+  if (design.mode === 'Hand')
+    return
+  const point = new Path('M', [design.pointer.x, design.pointer.y])
+  cursor = new Cursor([point])
+  cursor.render()
 }
 
 export default (): [typeof cursor, typeof removeCursor] => [

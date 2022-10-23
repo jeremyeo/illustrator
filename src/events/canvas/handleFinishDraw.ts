@@ -1,6 +1,6 @@
+import type { IPoint } from 'fabric/fabric-impl'
 import Line from '@/modules/Line'
 import Curve from '@/modules/Curve'
-import type { IPoint } from 'fabric/fabric-impl'
 import Path from '@/modules/Path'
 import { designStore, useDesignStore } from '@/stores/design'
 import { reversePoint } from '@/utils'
@@ -9,10 +9,11 @@ const drawLinePoint = (pointer: IPoint) => {
   if (designStore.temp.svgPath.length < 2) {
     designStore.temp.svgPath.push(
       new Path('M', [pointer.x, pointer.y]),
-      new Path('L', [pointer.x, pointer.y])
+      new Path('L', [pointer.x, pointer.y]),
     )
     return true
-  } else {
+  }
+  else {
     return false
   }
 }
@@ -26,12 +27,13 @@ const drawCurvePoint = (pointer: IPoint) => {
   if (designStore.temp.svgPath.length === 0) {
     designStore.temp.svgPath.push(
       new Path('M', endPoints),
-      new Path('C', [...endPoints, ...endPoints, ...endPoints])
+      new Path('C', [...endPoints, ...endPoints, ...endPoints]),
     )
-  } else {
+  }
+  else {
     const defaultControlPoint = reversePoint(
       lastPoint.coord.c2 as IPoint,
-      lastPoint.coord.end
+      lastPoint.coord.end,
     )
     designStore.temp.svgPath.push(
       new Path('C', [
@@ -39,12 +41,12 @@ const drawCurvePoint = (pointer: IPoint) => {
         defaultControlPoint.y,
         ...endPoints,
         ...endPoints,
-      ])
+      ]),
     )
 
     if (
-      pointer.x === startPoint.coord.end.x &&
-      pointer.y === startPoint.coord.end.y
+      pointer.x === startPoint.coord.end.x
+      && pointer.y === startPoint.coord.end.y
     )
       return false
   }
@@ -64,7 +66,7 @@ export const handleDrawPoint = () => {
 
 export const finishDraw = (
   Constructor: typeof Line | typeof Curve,
-  svgPath?: Path[]
+  svgPath?: Path[],
 ) => {
   const object = new Constructor(svgPath || designStore.temp.svgPath)
   designStore.objects.push(object)
