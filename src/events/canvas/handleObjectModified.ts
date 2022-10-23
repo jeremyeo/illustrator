@@ -4,7 +4,7 @@ import { designStore } from '@/stores/design'
 import type {
   FabricObject,
   FabricObjectPath,
-} from '@/utils/initFabricPrototype'
+} from '@/types'
 import Path, { type TPoint } from '@/modules/Path'
 
 const transformPath = (

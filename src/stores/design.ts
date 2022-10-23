@@ -6,7 +6,7 @@ import useDisableEvent from '@/composables/useDisableEvent'
 import type Curve from '@/modules/Curve'
 import type Line from '@/modules/Line'
 import type Path from '@/modules/Path'
-import type { FabricObject } from '@/utils/initFabricPrototype'
+import type { FabricObject } from '@/types'
 
 enum Mode {
   Hand = 'Hand',

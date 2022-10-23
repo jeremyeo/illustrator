@@ -5,7 +5,7 @@ import useCanvas from '@/composables/useCanvas'
 import useDarkMode from '@/composables/useDarkMode'
 import { useDesignStore } from '@/stores/design'
 import useDisableEvent from '@/composables/useDisableEvent'
-import type { FabricObject } from '@/utils/initFabricPrototype'
+import type { FabricObject } from '@/types'
 
 export default class Base {
   previewOpacity = 0.3
