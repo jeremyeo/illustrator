@@ -48,7 +48,7 @@ const [, toggleDark] = useDarkMode()
         cursor-pointer
         i-carbon-sun
         dark:i-carbon-moon
-        @click="toggleDark"
+        @click="toggleDark()"
       />
     </footer>
   </div>
