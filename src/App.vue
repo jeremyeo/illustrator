@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { useToggle } from '@vueuse/core'
 import FabricCanvas from './components/FabricCanvas.vue'
 import useDarkMode from './composables/useDarkMode'
 import FabricDrawTool from './components/FabricDrawTool.vue'
 
 const [, toggleDark] = useDarkMode()
+const [showTips, toggleShowTips] = useToggle(false)
 </script>
 
 <template>
@@ -18,12 +20,28 @@ const [, toggleDark] = useDarkMode()
     dark:c-white
     font-mono
   >
-    <header flex justify-center flex-shrink-0 py-8 text-4xl>
-      Illustrator
+    <header
+      flex justify-center flex-shrink-0
+      py-8 text-4xl
+      cursor-default
+    >
+      <div relative pr-2>
+        Illustrator
+
+        <div
+          select-none absolute top-0 right-0
+          translate-x-full p-3px rd-sm
+          class="bg-red/60" text-sm
+          @mouseenter="toggleShowTips()"
+          @mouseleave="toggleShowTips()"
+        >
+          help
+        </div>
+      </div>
     </header>
 
     <main w-full m-auto grow box-border relative overflow-hidden>
-      <FabricCanvas />
+      <FabricCanvas :show-tips="showTips" />
       <FabricDrawTool />
     </main>
 

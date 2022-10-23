@@ -12,7 +12,7 @@ export default (event: IEvent<MouseEvent>) => {
     // 左键按下
     case 1:
       design.ismousedown = true
-      if (event.e.ctrlKey) {
+      if (event.e.ctrlKey || event.e.metaKey) {
         const [, setDisableEvent] = useDisableEvent()
         design.isCanvasDrag = true
         setDisableEvent(true)

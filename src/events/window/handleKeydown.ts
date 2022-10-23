@@ -5,7 +5,11 @@ import { designStore, useDesignStore } from '@/stores/design'
 export default (e: KeyboardEvent) => {
   const design = useDesignStore()
   const [canvas] = useCanvas()
+
   switch (e.code) {
+    case 'ControlRight':
+    case 'MetaRight':
+    case 'MetaLeft':
     case 'ControlLeft':
       if (design.isCtrlKey)
         break

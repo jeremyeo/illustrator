@@ -13,7 +13,7 @@ export default (event: IEvent<MouseEvent>) => {
   design.setPointer(event.absolutePointer)
   handleAlignPointer()
   handlePreview()
-  if (event.e.ctrlKey) {
+  if (event.e.ctrlKey || event.e.metaKey) {
     const [, removeCursor] = useCursor()
     removeCursor()
     if (design.isCanvasDrag) {
