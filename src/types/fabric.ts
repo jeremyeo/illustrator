@@ -1,4 +1,5 @@
 import type { Object as TObject } from 'fabric/fabric-impl'
+import type { PathType } from './design'
 
 export type FabricObject = TObject
 
@@ -9,8 +10,8 @@ export interface ISelectionEvent {
 }
 
 export type FabricObjectPath =
-  | [string, number, number]
-  | [string, number, number, number, number, number, number]
+  | [PathType, number, number]
+  | [PathType, number, number, number, number, number, number]
 
 declare module 'fabric/fabric-impl' {
   interface Canvas {
