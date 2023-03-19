@@ -1,9 +1,9 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
-import 'normalize.css'
+
+import '@unocss/reset/tailwind.css'
 import 'uno.css'
-import './main.css'
 
 const app = createApp(App)
 

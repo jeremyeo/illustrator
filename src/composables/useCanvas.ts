@@ -1,41 +1,50 @@
 import '@/utils/initFabricPrototype'
-import { fabric } from 'fabric'
 import type { Canvas } from 'fabric/fabric-impl'
+import { computed, onMounted } from 'vue'
 import { useDesignStore } from '../stores/design'
+import useCursor from './useCursor'
+import initCanvas from '@/utils/initCanvas'
+import type { Mode } from '@/types/design'
+import design from '@/modules/DesignModule'
 
-import { addWindowEvent } from '@/events/window'
-import { addFabricCanvasEvent } from '@/events/canvas'
-import handleDarkModeChange from '@/events/canvas/handleDarkModeChange'
+let canvas: Canvas
 
-let canvas: null | Canvas = null
+export default () => {
+  const designStore = useDesignStore()
+  if (!canvas) {
+    onMounted(() => {
+      initCanvas(designStore, (instance) => {
+        canvas = instance
+      })
+    })
+  }
 
-// 切换 Fabric Canvas 可否区域选择
-export const toggleSelection = (selection?: boolean) => {
-  if (!canvas)
-    return
-  canvas.selection = selection !== undefined ? selection : !canvas.selection
+  const ready = computed(() => canvas !== undefined)
+
+  const changeMode = (mode?: Mode) => {
+    if (mode === designStore.mode || !ready.value) return
+    if (mode) designStore.mode = mode
+    const { removeCursor } = useCursor()
+    design.resetTempSvgPath()
+    switch (designStore.mode) {
+      case 'Hand':
+        design.toggleSelection(true)
+        design.toggleDisabledEvent(false)
+        removeCursor()
+        canvas.defaultCursor = 'default'
+        break
+      case 'Line':
+      case 'Curve':
+        design.toggleSelection(false)
+        design.toggleDisabledEvent(true)
+        canvas.defaultCursor = 'none'
+        break
+    }
+  }
+
+  return {
+    canvas,
+    changeMode,
+    ready,
+  }
 }
-
-// 初始化 Fabric Canvas
-const initCanvas = () => {
-  const design = useDesignStore()
-  canvas = new fabric.Canvas(design.canvasRef, {
-    width: design.getWidth(),
-    height: design.getHeight(),
-    preserveObjectStacking: true,
-  })
-  // 触发右键事件
-  canvas.fireRightClick = true
-  // 禁用右键菜单
-  canvas.stopContextMenu = true
-  // 监听黑暗模式变化，改变 Canvas 背景色与各物件的颜色
-  handleDarkModeChange()
-
-  // 添加 Canvas 上的处理事件
-  addFabricCanvasEvent()
-  // 添加 Window 对象上的处理事件
-  addWindowEvent()
-}
-
-type TUseCanvas = [Canvas, typeof initCanvas]
-export default (): TUseCanvas => [canvas as Canvas, initCanvas]

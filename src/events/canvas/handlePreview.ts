@@ -1,40 +1,42 @@
 import type { IPoint } from 'fabric/fabric-impl'
-import Curve from '@/modules/Curve'
-import Line from '@/modules/Line'
-import Path from '@/modules/Path'
-import { designStore, useDesignStore } from '@/stores/design'
+import Curve from '@/modules/CurveModule'
+import Line from '@/modules/LineModule'
+import Path from '@/modules/PathModule'
+import { useDesignStore } from '@/stores/design'
 import { reversePoint } from '@/utils'
+import { useDataStore } from '@/stores/data'
+import design from '@/modules/DesignModule'
+import type { DataStore } from '@/types/data'
+import type { DesignStore } from '@/types/design'
 
-const renderLinePreview = () => {
-  const design = useDesignStore()
-  const lastPoint = designStore.temp.svgPath.slice(-1)[0]
-  lastPoint.setCoord({ end: design.pointer })
+const renderLinePreview = (dataStore: DataStore, designStore: DesignStore) => {
+  const lastPoint = dataStore.drawing.svgPath.slice(-1)[0]
+  lastPoint.setCoord({ end: designStore.pointer })
 
-  const tempObj = new Line(designStore.temp.svgPath, {
+  const tempObj = new Line(dataStore.drawing.svgPath, {
     name: 'preview',
     selectable: false,
     evented: false,
     hoverCursor: 'none',
   })
-  designStore.cleanTempObjects()
-  designStore.temp.objects.push(tempObj)
+  design.cleanTempObjects()
+  dataStore.drawing.objects.push(tempObj as any)
   tempObj.render()
 }
 
-const renderCurvePreview = () => {
-  const design = useDesignStore()
-  const lastPoint = designStore.temp.svgPath.slice(-1)[0]
-  const secondLastPoint = designStore.temp.svgPath.slice(-2)[0]
+const renderCurvePreview = (dataStore: DataStore, designStore: DesignStore) => {
+  const lastPoint = dataStore.drawing.svgPath.slice(-1)[0]
+  const secondLastPoint = dataStore.drawing.svgPath.slice(-2)[0]
 
   lastPoint.setCoord({
     c1: secondLastPoint.coord.end,
-    c2: design.pointer,
-    end: design.pointer,
+    c2: designStore.pointer,
+    end: designStore.pointer,
   })
 
-  if (design.ismousedown) {
+  if (designStore.ismousedown) {
     const point = reversePoint(
-      design.pointer,
+      designStore.pointer,
       secondLastPoint.coord.end as IPoint,
     )
 
@@ -49,46 +51,48 @@ const renderCurvePreview = () => {
     lastPoint.setCoord({ c1: point })
   }
 
-  designStore.cleanTempObjects()
+  design.cleanTempObjects()
   const previewConfig = {
     name: 'preview',
     selectable: false,
     evented: false,
     hoverCursor: 'none',
   }
-  designStore.temp.objects.push(
-    new Curve(designStore.temp.svgPath, previewConfig),
+  dataStore.drawing.objects.push(
+    new Curve(dataStore.drawing.svgPath, previewConfig) as any,
   )
 
-  if (designStore.temp.svgPath.length > 2) {
-    designStore.temp.objects[0].previewOpacity = 1
-    const lastPath = designStore.temp.objects[0].svgPath.pop() as Path
-    const lastPoint = designStore.temp.objects[0].svgPath.slice(-1)[0]
-    designStore.temp.objects.push(
+  if (dataStore.drawing.svgPath.length > 2) {
+    dataStore.drawing.objects[0].previewOpacity = 1
+    const lastPath = dataStore.drawing.objects[0].svgPath.pop() as Path
+    const lastPoint = dataStore.drawing.objects[0].svgPath.slice(-1)[0]
+    dataStore.drawing.objects.push(
       new Curve(
         [
           new Path('M', [lastPoint.coord.end.x, lastPoint.coord.end.y]),
           new Path('C', lastPath.points),
         ],
         previewConfig,
-      ),
+      ) as any,
     )
   }
 
-  designStore.temp.objects.forEach(object => object.render())
+  dataStore.drawing.objects.forEach(object => object.render())
 }
 
 export default () => {
-  const design = useDesignStore()
-  if (designStore.temp.svgPath.length < 2)
+  const designStore = useDesignStore()
+  const dataStore = useDataStore()
+
+  if (dataStore.drawing.svgPath.length < 2)
     return
 
-  switch (design.mode) {
+  switch (designStore.mode) {
     case 'Line':
-      renderLinePreview()
+      renderLinePreview(dataStore, designStore)
       break
     case 'Curve':
-      renderCurvePreview()
+      renderCurvePreview(dataStore, designStore)
       break
   }
 }

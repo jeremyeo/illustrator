@@ -1,15 +1,14 @@
 import useCanvas from '@/composables/useCanvas'
-import useDisableEvent from '@/composables/useDisableEvent'
+import design from '@/modules/DesignModule'
 import { useDesignStore } from '@/stores/design'
 
 export default () => {
-  const design = useDesignStore()
-  const [canvas] = useCanvas()
-  design.ismousedown = false
-  if (design.isCanvasDrag) {
+  const designStore = useDesignStore()
+  const { canvas } = useCanvas()
+  designStore.ismousedown = false
+  if (designStore.isCanvasDrag) {
     canvas.setCursor('grab')
-    const [, setDisableEvent] = useDisableEvent()
-    design.isCanvasDrag = false
-    setDisableEvent(false)
+    designStore.isCanvasDrag = false
+    design.toggleDisabledEvent(false)
   }
 }

@@ -9,12 +9,7 @@ withDefaults(defineProps<{
 }>(), { showTips: false })
 
 const design = useDesignStore()
-const [, initCanvas] = useCanvas()
 const { wrapperRef, canvasRef } = storeToRefs(design)
-
-onMounted(() => {
-  initCanvas()
-})
 </script>
 
 <template>
@@ -25,7 +20,7 @@ onMounted(() => {
       bottom-0
       opacity-30
       pointer-events-none
-      text-sm
+      text-sm whitespace-nowrap
       class="left-1/2 transform -translate-1/2"
     >
       x: {{ design.pointer.x.toFixed(2) }} y:

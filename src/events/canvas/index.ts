@@ -7,12 +7,9 @@ import handleMousedown from '@/events/canvas/handleMousedown'
 import handleMousewheel from '@/events/canvas/handleMousewheel'
 import handleSelection from '@/events/canvas/handleSelection'
 import useCanvas from '@/composables/useCanvas'
-import NodeController from '@/controller/NodeController'
-
-export const nodeController = new NodeController()
 
 export const addFabricCanvasEvent = () => {
-  const [canvas] = useCanvas()
+  const { canvas } = useCanvas()
   canvas.on('object:modified', handleObjectModified)
   canvas.on('mouse:down', handleMousedown)
   canvas.on('mouse:move', handleMousemove)

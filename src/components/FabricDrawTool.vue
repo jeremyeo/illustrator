@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { useDesignStore } from '../stores/design'
-const design = useDesignStore()
+import useCanvas from '@/composables/useCanvas'
+import { useDesignStore } from '@/stores/design'
+import { Mode } from '@/types/design'
+
+const designStore = useDesignStore()
+const { changeMode } = useCanvas()
 </script>
 
 <template>
@@ -20,14 +24,14 @@ const design = useDesignStore()
       Tools
     </div>
     <div
-      v-for="mode in design.modeList"
+      v-for="mode in Mode"
       :key="mode"
-      :class="{ 'text-blue-500': design.mode === mode }"
+      :class="{ 'text-blue-500': designStore.mode === mode }"
       text-center
       hover:text-blue-500
       cursor-pointer
       hover:transition-200
-      @click="design.handleChangeMode(mode)"
+      @click="changeMode(mode)"
     >
       {{ mode }}
     </div>

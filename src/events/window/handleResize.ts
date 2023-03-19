@@ -2,11 +2,11 @@ import useCanvas from '@/composables/useCanvas'
 import { useDesignStore } from '@/stores/design'
 
 export default () => {
-  const design = useDesignStore()
-  const [canvas] = useCanvas()
+  const designStore = useDesignStore()
+  const { canvas } = useCanvas()
   canvas
     && canvas.setDimensions({
-      width: design.getWidth(),
-      height: design.getHeight(),
+      width: designStore.wrapperRef!.offsetWidth,
+      height: designStore.wrapperRef!.offsetHeight,
     })
 }

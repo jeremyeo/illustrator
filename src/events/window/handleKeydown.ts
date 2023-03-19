@@ -1,26 +1,27 @@
 import handleExitMode from './handleExitMode'
 import useCanvas from '@/composables/useCanvas'
-import { designStore, useDesignStore } from '@/stores/design'
+import { useDesignStore } from '@/stores/design'
+import design from '@/modules/DesignModule'
 
 export default (e: KeyboardEvent) => {
-  const design = useDesignStore()
-  const [canvas] = useCanvas()
+  const designStore = useDesignStore()
+  const { canvas } = useCanvas()
 
   switch (e.code) {
     case 'ControlRight':
     case 'MetaRight':
     case 'MetaLeft':
     case 'ControlLeft':
-      if (design.isCtrlKey)
+      if (designStore.isCtrlKey)
         break
-      design.isCtrlKey = true
+      designStore.isCtrlKey = true
       canvas.setCursor('grab')
       break
     case 'Escape':
       handleExitMode()
       break
     case 'Delete':
-      designStore.cleanSelections()
+      design.cleanSelections()
       break
   }
 }

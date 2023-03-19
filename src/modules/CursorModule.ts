@@ -1,5 +1,5 @@
 import { fabric } from 'fabric'
-import Base from './Base'
+import Base from './BaseModule'
 
 export default class Cursor extends Base {
   get config() {

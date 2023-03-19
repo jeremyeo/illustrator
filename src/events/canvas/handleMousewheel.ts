@@ -5,7 +5,7 @@ import { useDesignStore } from '@/stores/design'
 const zoomLimit = { min: 0.2, max: 5 }
 export default ({ e, pointer }: IEvent<WheelEvent>) => {
   const design = useDesignStore()
-  const [canvas] = useCanvas()
+  const { canvas } = useCanvas()
   if (e.ctrlKey || e.metaKey) {
     e.preventDefault()
     e.stopPropagation()

@@ -1,11 +1,8 @@
 import { fabric } from 'fabric'
 import type { IEvent, IPoint } from 'fabric/fabric-impl'
-import { designStore } from '@/stores/design'
-import type {
-  FabricObject,
-  FabricObjectPath,
-} from '@/types'
-import Path, { type TPoint } from '@/modules/Path'
+import type { FabricObject, FabricObjectPath } from '@/types/fabric'
+import Path from '@/modules/PathModule'
+import design from '@/modules/DesignModule'
 
 const transformPath = (
   path: FabricObjectPath,
@@ -26,7 +23,7 @@ const transformPath = (
   }
 
   return new Path(
-    path[0] as TPoint,
+    path[0],
     points.flatMap((point) => {
       point.x -= pathOffset.x
       point.y -= pathOffset.y
@@ -37,7 +34,7 @@ const transformPath = (
 }
 
 const updateObjectSvgPathByFabricObject = (fabricObject: FabricObject) => {
-  const object = designStore.findObjectById(fabricObject.id)
+  const object = design.findObjectById(fabricObject.id)
   if (!object)
     return
   const matrix = fabricObject.calcTransformMatrix()

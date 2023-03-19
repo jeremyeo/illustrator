@@ -1,19 +1,11 @@
 import type { IPoint } from 'fabric/fabric-impl'
-
-enum Type {
-  'M',
-  'L',
-  'C',
-  'Z',
-}
-
-export type TPoint = keyof typeof Type
+import type { PathType } from '@/types'
 
 export default class Path {
-  type: keyof typeof Type = 'M'
+  type: PathType = 'M'
   points: number[] = []
 
-  constructor(type: keyof typeof Type, points: number[]) {
+  constructor(type: PathType, points: number[]) {
     this.type = type
     this.points = points
   }

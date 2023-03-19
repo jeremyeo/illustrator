@@ -1,11 +1,11 @@
-import Node from '../modules/Node'
-import Path from '../modules/Path'
-import type { TPointType } from '../modules/Node'
-import type { TObjects } from '@/stores/design'
-import Line from '@/modules/Line'
+import Node from '../modules/NodeModule'
+import Path from '../modules/PathModule'
+import type { TPointType } from '../modules/NodeModule'
+import Line from '@/modules/LineModule'
+import type Base from '@/modules/BaseModule'
 
-export default class PathController {
-  private object: null | TObjects = null
+class NodeController {
+  private object: null | Base = null
   private nodeObjects: Array<Node | Line> = []
   private eventID: null | (() => void) = null
 
@@ -110,7 +110,7 @@ export default class PathController {
     this.object?.fabricObject?.set({ hasBorders: false, hasControls: false })
   }
 
-  edit(object: TObjects) {
+  edit(object: Base) {
     this.object = object
     this.hiddenBordersAndControls()
     this.eventID = this.hiddenBordersAndControls.bind(this)
@@ -127,3 +127,6 @@ export default class PathController {
     this.cleanNode()
   }
 }
+
+const nodeController = new NodeController()
+export default nodeController

@@ -1,6 +1,10 @@
-import { designStore } from '@/stores/design'
-import type { ISelectionEvent } from '@/types'
+import design from '@/modules/DesignModule'
+import { useDataStore } from '@/stores/data'
+import type { ISelectionEvent } from '@/types/fabric'
 
 export default (e: ISelectionEvent) => {
-  designStore.selections = e.selected
+  const dataStore = useDataStore()
+  dataStore.selections = e.selected.map((object) => {
+    return design.findObjectById(Number(object.name))!
+  }) as any
 }

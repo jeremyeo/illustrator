@@ -1,4 +1,3 @@
-import type { Theme } from '@unocss/preset-mini'
 import { defineConfig, presetAttributify, presetIcons, presetUno } from 'unocss'
 
 export default defineConfig({
@@ -10,7 +9,7 @@ export default defineConfig({
     },
   ],
   rules: [],
-  theme: <Theme>{
+  theme: {
     colors: {
       primary: 'var(--color-primary)',
     },
@@ -20,9 +19,6 @@ export default defineConfig({
     presetAttributify(),
     presetIcons({
       scale: 1.2,
-      collections: {
-        carbon: () => import('@iconify/json/json/carbon.json'),
-      },
     }),
   ],
 })

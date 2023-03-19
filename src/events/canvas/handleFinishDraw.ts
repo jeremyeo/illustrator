@@ -1,13 +1,16 @@
 import type { IPoint } from 'fabric/fabric-impl'
-import Line from '@/modules/Line'
-import Curve from '@/modules/Curve'
-import Path from '@/modules/Path'
-import { designStore, useDesignStore } from '@/stores/design'
+import Line from '@/modules/LineModule'
+import Curve from '@/modules/CurveModule'
+import Path from '@/modules/PathModule'
+import { useDesignStore } from '@/stores/design'
 import { reversePoint } from '@/utils'
+import { useDataStore } from '@/stores/data'
+import design from '@/modules/DesignModule'
 
 const drawLinePoint = (pointer: IPoint) => {
-  if (designStore.temp.svgPath.length < 2) {
-    designStore.temp.svgPath.push(
+  const dataStore = useDataStore()
+  if (dataStore.drawing.svgPath.length < 2) {
+    dataStore.drawing.svgPath.push(
       new Path('M', [pointer.x, pointer.y]),
       new Path('L', [pointer.x, pointer.y]),
     )
@@ -19,13 +22,14 @@ const drawLinePoint = (pointer: IPoint) => {
 }
 
 const drawCurvePoint = (pointer: IPoint) => {
-  const startPoint = designStore.temp.svgPath[0]
-  const lastPoint = designStore.temp.svgPath.slice(-1)[0]
+  const dataStore = useDataStore()
+  const startPoint = dataStore.drawing.svgPath[0]
+  const lastPoint = dataStore.drawing.svgPath.slice(-1)[0]
 
   const endPoints = [pointer.x, pointer.y]
 
-  if (designStore.temp.svgPath.length === 0) {
-    designStore.temp.svgPath.push(
+  if (dataStore.drawing.svgPath.length === 0) {
+    dataStore.drawing.svgPath.push(
       new Path('M', endPoints),
       new Path('C', [...endPoints, ...endPoints, ...endPoints]),
     )
@@ -35,7 +39,7 @@ const drawCurvePoint = (pointer: IPoint) => {
       lastPoint.coord.c2 as IPoint,
       lastPoint.coord.end,
     )
-    designStore.temp.svgPath.push(
+    dataStore.drawing.svgPath.push(
       new Path('C', [
         defaultControlPoint.x,
         defaultControlPoint.y,
@@ -55,12 +59,12 @@ const drawCurvePoint = (pointer: IPoint) => {
 }
 
 export const handleDrawPoint = () => {
-  const design = useDesignStore()
-  switch (design.mode) {
+  const designStore = useDesignStore()
+  switch (designStore.mode) {
     case 'Line':
-      return drawLinePoint(design.pointer)
+      return drawLinePoint(designStore.pointer)
     case 'Curve':
-      return drawCurvePoint(design.pointer)
+      return drawCurvePoint(designStore.pointer)
   }
 }
 
@@ -68,23 +72,25 @@ export const finishDraw = (
   Constructor: typeof Line | typeof Curve,
   svgPath?: Path[],
 ) => {
-  const object = new Constructor(svgPath || designStore.temp.svgPath)
-  designStore.objects.push(object)
+  const dataStore = useDataStore()
+  const object = new Constructor(svgPath || dataStore.drawing.svgPath)
+  dataStore.objects.push(object as any)
   object.render()
 }
 
 export const handleFinishDraw = () => {
-  const design = useDesignStore()
-  switch (design.mode) {
+  const designStore = useDesignStore()
+  const dataStore = useDataStore()
+  switch (designStore.mode) {
     case 'Line':
-      if (designStore.temp.svgPath.length === 2) {
+      if (dataStore.drawing.svgPath.length === 2) {
         finishDraw(Line)
-        designStore.resetTempSvgPath()
+        design.resetTempSvgPath()
       }
       break
     case 'Curve':
       finishDraw(Curve)
-      designStore.resetTempSvgPath()
+      design.resetTempSvgPath()
       break
   }
 }

@@ -1,9 +1,10 @@
 import type { IEvent } from 'fabric/fabric-impl'
-import { nodeController } from '.'
-import { designStore } from '@/stores/design'
+import nodeController from '@/controller/NodeController'
+import { useDataStore } from '@/stores/data'
 
 export default (e: IEvent) => {
-  designStore.selections = []
+  const dataStore = useDataStore()
+  dataStore.selections = []
   if (!e.target && nodeController.isEdit)
     nodeController.exit()
 }

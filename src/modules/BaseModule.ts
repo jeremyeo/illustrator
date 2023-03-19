@@ -1,17 +1,20 @@
 import { fabric } from 'fabric'
 import type { IObjectOptions } from 'fabric/fabric-impl'
-import type Path from './Path'
+import type Path from './PathModule'
+import design from './DesignModule'
 import useCanvas from '@/composables/useCanvas'
 import useDarkMode from '@/composables/useDarkMode'
 import { useDesignStore } from '@/stores/design'
-import useDisableEvent from '@/composables/useDisableEvent'
-import type { FabricObject } from '@/types'
+import type { FabricObject } from '@/types/fabric'
 
 export default class Base {
   previewOpacity = 0.3
   normalOpacity = 1
-  id: number = Date.now()
-  private _config: IObjectOptions = {
+  readonly id: number = Date.now()
+  svgPath: Path[] = []
+  fabricObject: FabricObject | null = null
+
+  private readonly _config: IObjectOptions = {
     name: String(this.id),
     strokeWidth: 1,
     strokeUniform: true,
@@ -26,11 +29,9 @@ export default class Base {
     evented: true,
   }
 
-  design = useDesignStore()
-  canvas = useCanvas()[0]
+  private readonly designStore = useDesignStore()
+  private readonly canvas = useCanvas().canvas
   isDarkMode = useDarkMode()[0]
-  svgPath: Path[] = []
-  fabricObject: FabricObject | null = null
 
   events: { [key: string]: Set<() => void> } = {}
 
@@ -105,13 +106,13 @@ export default class Base {
       : `rgba(0, 0, 0, ${opacity})`
   }
 
-  update(config?: IObjectOptions, disabledEvent = false) {
+  update(config?: IObjectOptions, disabled = false) {
     this.config.stroke = this.getStroke()
     Object.assign(this.config, config)
-    const [disabled] = useDisableEvent()
+    const { eventDisabled } = design
 
     const newConfig: IObjectOptions = { ...this.config }
-    if (disabled || disabledEvent) {
+    if (eventDisabled || disabled) {
       Object.assign(newConfig, {
         selectable: false,
         evented: false,

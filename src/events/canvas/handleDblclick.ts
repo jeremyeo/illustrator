@@ -1,11 +1,11 @@
 import type { IEvent } from 'fabric/fabric-impl'
-import { nodeController } from '.'
+import nodeController from '@/controller/NodeController'
 import useCanvas from '@/composables/useCanvas'
-import { designStore } from '@/stores/design'
+import design from '@/modules/DesignModule'
 
 export default (e: IEvent) => {
-  const [canvas] = useCanvas()
-  const object = !e.target?.id ? null : designStore.findObjectById(e.target?.id)
+  const { canvas } = useCanvas()
+  const object = !e.target?.id ? null : design.findObjectById(e.target?.id)
 
   if (object) {
     canvas.discardActiveObject()

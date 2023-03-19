@@ -3,20 +3,24 @@ import { fabric } from 'fabric'
 import handlePreview from './handlePreview'
 import handleAlignPointer from './handleAlignPointer'
 import { useDesignStore } from '@/stores/design'
-import useCursor, { handleDrawCursor } from '@/composables/useCursor'
+import useCursor from '@/composables/useCursor'
 import useCanvas from '@/composables/useCanvas'
+import design from '@/modules/DesignModule'
 
 let previousEvent: null | IEvent<MouseEvent> = null
 export default (event: IEvent<MouseEvent>) => {
-  const design = useDesignStore()
-  const [canvas] = useCanvas()
-  design.setPointer(event.absolutePointer)
+  const { canvas } = useCanvas()
+  const designStore = useDesignStore()
+  const { removeCursor, updateCursor } = useCursor()
+
+  design.updatePointer(event.absolutePointer)
+
   handleAlignPointer()
   handlePreview()
+
   if (event.e.ctrlKey || event.e.metaKey) {
-    const [, removeCursor] = useCursor()
     removeCursor()
-    if (design.isCanvasDrag) {
+    if (designStore.isCanvasDrag) {
       canvas.setCursor('grabbing')
       let { movementX } = event.e
       let { movementY } = event.e
@@ -37,5 +41,5 @@ export default (event: IEvent<MouseEvent>) => {
 
     return
   }
-  handleDrawCursor()
+  updateCursor()
 }

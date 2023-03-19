@@ -1,7 +1,7 @@
 import { fabric } from 'fabric'
 import type { IEventNew, IObjectOptions, IPoint } from 'fabric/fabric-impl'
-import Base from './Base'
-import type Path from './Path'
+import Base from './BaseModule'
+import type Path from './PathModule'
 import { offsetPoint, reversePoint } from '@/utils'
 
 export type TPointType = 'c1' | 'c2' | 'end'
