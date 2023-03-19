@@ -1,5 +1,5 @@
 import type { IPoint } from 'fabric/fabric-impl'
-import type { PathType } from '@/types'
+import type { PathType } from '@/types/design'
 
 export default class Path {
   type: PathType = 'M'

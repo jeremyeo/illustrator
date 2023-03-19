@@ -73,13 +73,13 @@ declare module 'fabric/fabric-impl' {
     on(eventName: 'modified', handler: (e: IModifiedEvent) => void): T
   }
 
-  // interface IEventNew extends IEvent {
-  //   transform?: {
-  //     corner: string
-  //     original: TObject
-  //     originX: string
-  //     originY: string
-  //     width: number
-  //   }
-  // }
+  type IEventNew = IEvent & {
+    transform?: {
+      corner: string
+      original: TObject
+      originX: string
+      originY: string
+      width: number
+    }
+  }
 }
