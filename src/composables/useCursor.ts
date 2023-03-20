@@ -18,6 +18,8 @@ export default () => {
     const point = new Path('M', [design.pointer.x, design.pointer.y])
     cursor = new Cursor([point])
     cursor.render()
+
+    return cursor
   }
 
   updateCursor()

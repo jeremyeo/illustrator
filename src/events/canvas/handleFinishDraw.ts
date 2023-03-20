@@ -6,6 +6,7 @@ import { useDesignStore } from '@/stores/design'
 import { reversePoint } from '@/utils'
 import { useDataStore } from '@/stores/data'
 import design from '@/modules/DesignModule'
+import { Mode } from '@/types/design'
 
 const drawLinePoint = (pointer: IPoint) => {
   const dataStore = useDataStore()
@@ -82,13 +83,13 @@ export const handleFinishDraw = () => {
   const designStore = useDesignStore()
   const dataStore = useDataStore()
   switch (designStore.mode) {
-    case 'Line':
+    case Mode.Line:
       if (dataStore.drawing.svgPath.length === 2) {
         finishDraw(Line)
         design.resetTempSvgPath()
       }
       break
-    case 'Curve':
+    case Mode.Curve:
       finishDraw(Curve)
       design.resetTempSvgPath()
       break

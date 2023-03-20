@@ -22,5 +22,6 @@ export const addWindowEvent = () => {
   removeWindowEvent()
   Object.entries(windowEvents).forEach(([key, value]) => {
     window.addEventListener(key as keyof WindowEventMap, value as () => void)
+    if (key === 'resize') (value as () => void)()
   })
 }

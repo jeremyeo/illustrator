@@ -37,20 +37,17 @@ export default class Base {
 
   constructor(svgPath?: Path[], config?: IObjectOptions) {
     this.svgPath = [...(svgPath || [])]
-    if (config)
-      this.config = config
-    const opacity = this.config.name === 'preview' ? '.3' : '1'
-    this.config.stroke = this.isDarkMode.value
-      ? `rgba(255, 255, 255, ${opacity})`
-      : `rgba(0, 0, 0, ${opacity})`
+    this.updateConfig(config)
   }
 
-  set config(newConfig: IObjectOptions) {
+  get config() {
+    return { ...this._config }
+  }
+
+  updateConfig(newConfig?: IObjectOptions) {
+    this._config.stroke = this.getStroke()
+    if (!newConfig) return
     Object.assign(this._config, newConfig)
-  }
-
-  get config(): IObjectOptions {
-    return this._config
   }
 
   on(type: string, callback: () => void) {
@@ -78,7 +75,7 @@ export default class Base {
   }
 
   getFabricObject(): FabricObject {
-    return new fabric.Path(this.svgPathText, this.config)
+    return new fabric.Path(this.svgPathText, this._config)
   }
 
   render() {
@@ -98,20 +95,21 @@ export default class Base {
 
   getStroke(previewOpacity?: number, normalOpacity?: number) {
     const opacity
-      = this.config.name === 'preview'
-        ? previewOpacity || this.previewOpacity
-        : normalOpacity || this.normalOpacity
-    return this.isDarkMode.value
+      = this._config.name === 'preview'
+        ? (previewOpacity || this.previewOpacity)
+        : (normalOpacity || this.normalOpacity)
+
+    return this.isDarkMode
       ? `rgba(255, 255, 255, ${opacity})`
       : `rgba(0, 0, 0, ${opacity})`
   }
 
   update(config?: IObjectOptions, disabled = false) {
-    this.config.stroke = this.getStroke()
-    Object.assign(this.config, config)
+    this._config.stroke = this.getStroke()
+    Object.assign(this._config, config)
     const { eventDisabled } = design
 
-    const newConfig: IObjectOptions = { ...this.config }
+    const newConfig: IObjectOptions = { ...this._config }
     if (eventDisabled || disabled) {
       Object.assign(newConfig, {
         selectable: false,

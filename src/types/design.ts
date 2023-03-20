@@ -3,6 +3,7 @@ import type { useDesignStore } from '@/stores/design'
 
 export enum Mode {
   Hand = 'Hand',
+  Detect = 'Detect',
   Line = 'Line',
   Curve = 'Curve',
 }

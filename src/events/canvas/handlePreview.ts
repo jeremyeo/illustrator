@@ -59,7 +59,7 @@ const renderCurvePreview = (dataStore: DataStore, designStore: DesignStore) => {
     hoverCursor: 'none',
   }
   dataStore.drawing.objects.push(
-    new Curve(dataStore.drawing.svgPath, previewConfig) as any,
+    new Curve(dataStore.drawing.svgPath, { ...previewConfig }) as any,
   )
 
   if (dataStore.drawing.svgPath.length > 2) {
@@ -72,7 +72,7 @@ const renderCurvePreview = (dataStore: DataStore, designStore: DesignStore) => {
           new Path('M', [lastPoint.coord.end.x, lastPoint.coord.end.y]),
           new Path('C', lastPath.points),
         ],
-        previewConfig,
+        { ...previewConfig },
       ) as any,
     )
   }

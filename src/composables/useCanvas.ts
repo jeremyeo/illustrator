@@ -4,7 +4,7 @@ import { computed, onMounted } from 'vue'
 import { useDesignStore } from '../stores/design'
 import useCursor from './useCursor'
 import initCanvas from '@/utils/initCanvas'
-import type { Mode } from '@/types/design'
+import { Mode } from '@/types/design'
 import design from '@/modules/DesignModule'
 
 let canvas: Canvas
@@ -27,14 +27,15 @@ export default () => {
     const { removeCursor } = useCursor()
     design.resetTempSvgPath()
     switch (designStore.mode) {
-      case 'Hand':
+      case Mode.Hand:
         design.toggleSelection(true)
         design.toggleDisabledEvent(false)
         removeCursor()
         canvas.defaultCursor = 'default'
         break
-      case 'Line':
-      case 'Curve':
+      case Mode.Line:
+      case Mode.Curve:
+      case Mode.Detect:
         design.toggleSelection(false)
         design.toggleDisabledEvent(true)
         canvas.defaultCursor = 'none'
